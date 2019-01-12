@@ -1,0 +1,20 @@
+service: serverx-serverless
+
+app: serverx-serverless
+tenant: mflorence99
+
+provider:
+  name: google
+  runtime: nodejs8
+  project: gcf-project-89309
+  credentials: ~/.gcloud/keyfile.json
+  region: us-east1
+
+plugins:
+  - serverless-google-cloudfunctions
+
+functions:
+  app:
+    handler: gcf
+    events:
+      - http: ANY /

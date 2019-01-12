@@ -1,0 +1,17 @@
+service: serverx-serverless
+
+app: serverx-serverless
+tenant: mflorence99
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: dev
+  region: us-east-1
+
+functions:
+  app:
+    handler: server.aws
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'

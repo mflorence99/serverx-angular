@@ -1,0 +1,23 @@
+{
+  "name": "serverx-angular",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Mark Florence",
+  "license": "ISC",
+  "scripts": {
+    "build": "npm run lint && rimraf dist  && tsc && cp sample/* dist/ && cp -R node_modules/ dist/",
+    "clean": "rm -rf node_modules && rm package-lock.json && npm install",
+    "lint": "tslint --project .",
+    "server": "npm run build && node dist/server.js"
+  },
+  "dependencies": {
+    "serverx-ts": "latest"
+  },
+  "devDependencies": {
+    "@types/node": "10",
+    "rimraf": "2",
+    "serverless-google-cloudfunctions": "*",
+    "tslint": "5",
+    "typescript": "3"
+  }
+}
