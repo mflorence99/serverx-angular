@@ -1,6 +1,6 @@
-service: serverx-serverless
+service: serverx-angular
 
-app: serverx-serverless
+app: serverx-angular
 tenant: mflorence99
 
 provider:
@@ -11,7 +11,7 @@ provider:
 
 functions:
   app:
-    handler: server.aws
+    handler: functions.aws
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
