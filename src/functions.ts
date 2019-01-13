@@ -16,7 +16,7 @@ const routes: Route[] = [
     handler: FileServer,
     middlewares: [Compressor, CORS],
     services: [
-      { provide: COMPRESSOR_OPTS, useValue: { threshold: 0 } }, 
+      { provide: COMPRESSOR_OPTS, useValue: { threshold: 1024 } }, 
       { provide: FILE_SERVER_OPTS, useValue: { root: __dirname } }
     ]
   }
