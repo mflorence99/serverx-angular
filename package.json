@@ -1,7 +1,7 @@
 {
   "name": "serverx-angular",
   "version": "1.0.0",
-  "main": "dist/functions.js",
+  "main": "dist/index.js",
   "author": "Mark Florence",
   "license": "ISC",
   "scripts": {
@@ -13,13 +13,13 @@
     "server": "npm run build && node dist/server.js"
   },
   "dependencies": {
-    "serverless-apigw-binary": "^0.4.4",
-    "serverless-google-cloudfunctions": "*",
     "serverx-ts": "latest"
   },
   "devDependencies": {
     "@types/node": "10",
     "rimraf": "2",
+    "serverless-apigw-binary": "^0.4.4",
+    "serverless-google-cloudfunctions": "*",
     "tslint": "5",
     "typescript": "3"
   }

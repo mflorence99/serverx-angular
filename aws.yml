@@ -9,6 +9,16 @@ provider:
   stage: dev
   region: us-east-1
 
+package:
+  exclude:
+   - node_modules/axios/**
+   - node_modules/googleapis/**
+   - node_modules/rimraf/**
+   - node_modules/serverless-apigw-binary/**
+   - node_modules/serverless-google-cloudfunctions/**
+   - node_modules/tslint/**
+   - node_modules/typescript/**
+
 plugins:
   - serverless-apigw-binary
 
@@ -19,7 +29,7 @@ custom:
 
 functions:
   app:
-    handler: functions.aws
+    handler: index.aws
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'

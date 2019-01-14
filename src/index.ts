@@ -31,6 +31,6 @@ export function aws(event, context) {
 
 const gcfApp = new GCFApp(routes);
 
-export async function gcf(req, res) {
-  await gcfApp.handle(req, res);
+export function gcf(req, res) {
+  return gcfApp.handle(req, res);
 }
