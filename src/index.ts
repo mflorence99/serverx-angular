@@ -2,7 +2,6 @@ import 'reflect-metadata';
 
 import { AWSLambdaApp } from 'serverx-ts';
 import { Compressor } from 'serverx-ts';
-import { COMPRESSOR_OPTS } from 'serverx-ts';
 import { CORS } from 'serverx-ts';
 import { FILE_SERVER_DEFAULT_OPTS } from 'serverx-ts';
 import { FILE_SERVER_OPTS } from 'serverx-ts';
@@ -18,7 +17,6 @@ const routes: Route[] = [
     handler: FileServer,
     middlewares: [Compressor, CORS],
     services: [
-      { provide: COMPRESSOR_OPTS, useValue: { threshold: 1024 } }, 
       { provide: FILE_SERVER_OPTS, useValue: { root: __dirname } }
     ]
   }

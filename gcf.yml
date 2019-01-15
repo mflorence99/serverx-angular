@@ -14,7 +14,7 @@ plugins:
   - serverless-google-cloudfunctions
 
 functions:
-  app:
+  gcf:
     handler: gcf
     events:
       - http: ANY /
