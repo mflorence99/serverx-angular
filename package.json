@@ -1,16 +1,16 @@
 {
   "name": "serverx-angular",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "author": "Mark Florence",
   "license": "ISC",
   "scripts": {
-    "build": "npm run lint && rimraf dist && tsc && cp sample/* dist/ && cp -R node_modules/ dist/",
+    "build": "npm run lint && rimraf dist && tsc",
     "clean": "rm -rf node_modules && rm package-lock.json && npm install",
-    "deploy-aws": "npm run build && cp -f aws.yml dist/serverless.yml && cd dist/ && serverless deploy",
-    "deploy-gcf": "npm run build && cp -f gcf.yml dist/serverless.yml && cd dist/ && serverless deploy",
+    "deploy-aws": "npm run build && cp sample/* dist/ && cp -R node_modules/ dist/ && cp -f aws.yml dist/serverless.yml && cd dist/ && serverless deploy",
+    "deploy-gcf": "npm run build && cp sample/* dist/ && cp -f gcf.yml dist/serverless.yml && cp gcf.json dist/package.json && cd dist/ && serverless deploy",
     "lint": "tslint --project .",
-    "server": "npm run build && node dist/server.js"
+    "server": "npm run build && cp sample/* dist/ && node dist/server.js"
   },
   "dependencies": {
     "serverx-ts": "latest"

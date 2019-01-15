@@ -5,20 +5,10 @@ tenant: mflorence99
 
 provider:
   name: google
-  runtime: nodejs
+  runtime: nodejs8
   project: gcf-project-45679
   credentials: ~/.gcloud/gcf-project-45679.json
   region: us-east1
-
-package:
-  exclude:
-   - node_modules/axios/**
-   - node_modules/googleapis/**
-   - node_modules/rimraf/**
-   - node_modules/serverless-apigw-binary/**
-   - node_modules/serverless-google-cloudfunctions/**
-   - node_modules/tslint/**
-   - node_modules/typescript/**
 
 plugins:
   - serverless-google-cloudfunctions

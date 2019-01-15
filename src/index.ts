@@ -4,6 +4,7 @@ import { AWSLambdaApp } from 'serverx-ts';
 import { Compressor } from 'serverx-ts';
 import { COMPRESSOR_OPTS } from 'serverx-ts';
 import { CORS } from 'serverx-ts';
+import { FILE_SERVER_DEFAULT_OPTS } from 'serverx-ts';
 import { FILE_SERVER_OPTS } from 'serverx-ts';
 import { FileServer } from 'serverx-ts';
 import { GCFApp } from 'serverx-ts';
@@ -13,6 +14,7 @@ const routes: Route[] = [
 
   {
     path: '/',
+    methods: ['GET'],
     handler: FileServer,
     middlewares: [Compressor, CORS],
     services: [
@@ -32,5 +34,7 @@ export function aws(event, context) {
 const gcfApp = new GCFApp(routes);
 
 export function gcf(req, res) {
-  return gcfApp.handle(req, res);
+  // TODO: horrible hack!! why does DI not work??
+  FILE_SERVER_DEFAULT_OPTS.root = __dirname;
+  gcfApp.handle(req, res);
 }

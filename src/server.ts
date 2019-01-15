@@ -29,7 +29,7 @@ const app = new HttpApp(routes);
 const listener = app.listen();
 const server = createServer(listener)
   .on('listening', () => {
-    console.log(chalk.cyanBright('HttpApp listening on port 4200'));
+    console.log(chalk.cyanBright(`HttpApp listening on port 4200 deploying from ${__dirname}`));
   });
 
 server.listen(4200);
