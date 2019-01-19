@@ -1,0 +1,24 @@
+service: xxx
+
+app: xxx
+tenant: xxx
+
+package:
+  exclude:
+   - node_modules/**
+
+provider:
+  name: google
+  runtime: nodejs8
+  project: xxx
+  credentials: xxx
+  region: xxx
+
+plugins:
+  - serverless-google-cloudfunctions
+
+functions:
+  gcf:
+    handler: gcf
+    events:
+      - http: ANY /

@@ -1,0 +1,11 @@
+{
+  "app": "serverx-angular",
+  "environment": {
+    "BACKEND_ENDPOINT": "https://admin.appcast.cloud"
+  },
+  "provider": "aws",
+  "region": "us-east-1",
+  "service": "serverx-angular",
+  "stage": "dev",
+  "tenant": "mflorence99"
+}

@@ -1,26 +1,49 @@
 {
   "name": "serverx-angular",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "0.0.0",
+  "description": "Deploy Angular application to serverless environments using ServeRX-ts",
+  "main": "./dist/index.js",
+  "bin": {
+    "serverx-angular": "./bin/index.js"
+  },
+  "preferGlobal": true,
   "author": "Mark Florence",
-  "license": "ISC",
+  "license": "MIT",
+  "engines": {
+    "node": ">= 8.10"
+  },
   "scripts": {
-    "build": "npm run lint && rimraf dist && tsc",
+    "build": "npm run lint && npm run test && rimraf dist && tsc && cp -R model/ dist",
     "clean": "rm -rf node_modules && rm package-lock.json && npm install",
-    "deploy-aws": "npm run build && cp sample/* dist/ && cp -R node_modules/ dist/ && cp -f aws.yml dist/serverless.yml && cd dist/ && serverless deploy",
-    "deploy-gcf": "npm run build && cp sample/* dist/ && cp -f gcf.yml dist/serverless.yml && cp gcf.json dist/package.json && cd dist/ && serverless deploy",
+    "lib": "npm run build && npm version patch && npm publish",
     "lint": "tslint --project .",
-    "server": "npm run build && cp sample/* dist/ && node dist/server.js"
+    "sample-aws": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json",
+    "sample-google": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/google.json",
+    "test": "jest --coverage && make-coverage-badge && mv ./coverage/badge.svg ./coverage.svg",
+    "toc": "markdown-toc -i README.md"
   },
   "dependencies": {
-    "serverx-ts": "latest"
-  },
-  "devDependencies": {
-    "@types/node": "10",
+    "chalk": "2",
+    "js-yaml": "3",
     "rimraf": "2",
     "serverless-apigw-binary": "^0.4.4",
     "serverless-google-cloudfunctions": "*",
-    "tslint": "5",
-    "typescript": "3"
+    "serverx-ts": "latest",
+    "tmp": "0.0.33",
+    "typescript": "3",
+    "yargs": "^12"
+  },
+  "devDependencies": {
+    "@types/jest": "23",
+    "@types/js-yaml": "^3",
+    "@types/node": "10",
+    "@types/tmp": "0.0.33",
+    "@types/yargs": "^12",
+    "jest": "23",
+    "make-coverage-badge": "1",
+    "markdown-toc": "1",
+    "ts-jest": "23",
+    "ts-node": "7",
+    "tslint": "5"
   }
 }

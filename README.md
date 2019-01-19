@@ -1,6 +1,11 @@
-# serverx-angular
-Deploy Angular application to serverless environments using ServeRX-ts
+# ServeRX-angular
 
-## temp
-* https://v1pzo1e2d1.execute-api.us-east-1.amazonaws.com/dev
-* https://us-east1-gcf-project-45679.cloudfunctions.net/gcf
+[![Build Status](https://travis-ci.org/mflorence99/serverx-angular.svg?branch=master)](https://travis-ci.org/mflorence99/serverx-angular) 
+[![Jest Coverage](./coverage.svg)]()
+[![npm](https://img.shields.io/npm/v/serverx-angular.svg)]()
+[![node](https://img.shields.io/badge/node-8.10-blue.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+[![NPM](https://nodei.co/npm/serverx-angular.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/serverx-angular/)
+
+Deploy Angular application to serverless environments using ServeRX-ts.

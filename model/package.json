@@ -1,0 +1,8 @@
+{
+  "main": "index.js",
+  "dependencies": {
+    "serverless-apigw-binary": "^0.4.4",
+    "serverless-google-cloudfunctions": "*",
+    "serverx-ts": "latest"
+  }
+}

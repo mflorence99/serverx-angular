@@ -1,23 +1,20 @@
-service: serverx-angular
+service: xxx
 
-app: serverx-angular
-tenant: mflorence99
+app: xxx
+tenant: xxx
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: dev
-  region: us-east-1
+  stage: xxx
+  region: xxx
 
 package:
   exclude:
    - node_modules/axios/**
    - node_modules/googleapis/**
-   - node_modules/rimraf/**
    - node_modules/serverless-apigw-binary/**
    - node_modules/serverless-google-cloudfunctions/**
-   - node_modules/tslint/**
-   - node_modules/typescript/**
 
 plugins:
   - serverless-apigw-binary
