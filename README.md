@@ -61,7 +61,7 @@ If you don't yet have an account, you'll be prompted to sign up for one. Once yo
 
 * [AWS - Credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials/) shows how to create an AWS account (if necessary) and store its credentials on your development computer or CI server. Once done, no additional steps are necessary, no matter how many applications you deploy.
 
-* Setting up Google is more complex. [Google -Credentials](https://serverless.com/framework/docs/providers/google/guide/credentials/) shows step-by-step how to create a Google Cloud account, a Google Cloud Project and associated service account, and how to download and store its credentials. You will need to do this for every app you deploy.
+* Setting up Google is more complex. [Google - Credentials](https://serverless.com/framework/docs/providers/google/guide/credentials/) shows step-by-step how to create a Google Cloud account, a Google Cloud Project and associated service account, and how to download and store its credentials. You will need to do this for every app you deploy.
 
 ### Install ServeRX-angular
 
@@ -76,7 +76,7 @@ In keeping with the ServeRX-angular objectives, no special preparation of your A
 
 > Your app may be in an inner directory, whose name is the name of the app as known to the Angular CLI. In ths case, ServeRX-angular needs that inner directory, for example `./dist/hello-world`.
 
-You must also create a deployment YAML or JSON file to describe the serverless deployment of your app to ServeRX-angular. You might have different versions of this file and your development computer and your CI or build servers.
+You must also create a deployment YAML or JSON file to describe the serverless deployment of your app to ServeRX-angular. You might have different versions of this file on your development computer and your CI or build servers.
 
 > Either YAML or JSON syntax can be used, although this document uses JSON for illustration.
 
@@ -142,7 +142,7 @@ If you supply the `environment` setting, its values are inserted into your `inde
 
 ```html
 <script>
-  var ENV = { /* your settings */ }
+  var ENV = { /* your settings */ };
 </script>
 ```
 
@@ -158,6 +158,56 @@ Now all the setup is out of the way, deployment is easy. In fact, a sample Angul
 serverx-angular --app this/that/dist/app-name --deploy somewhere/else/app-name.json
 ```
 
-## How it Works
+Take note of the URL generated for your app. For reference, the sample app has been deployed to both AWS and Google Cloud at these URLs:
 
-XX
+* https://v1pzo1e2d1.execute-api.us-east-1.amazonaws.com/dev/
+* https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/
+
+> TODO: When running in headless environments, it is possible to predict the app's URL.
+
+## How it Works
+ 
+ServeRX-angular uses [ServeRX-ts](https://github.com/mflorence99/serverx-ts) to host your Angular app. The AWS Lambda and Google Cloud Functions versions of the hosting code are almost identical. Here is the AWS Lambda version:
+
+```ts
+import 'reflect-metadata';
+
+import { AWSLambdaApp } from 'serverx-ts';
+import { BinaryTyper } from 'serverx-ts';
+import { Compressor } from 'serverx-ts';
+import { CORS } from 'serverx-ts';
+import { FILE_SERVER_OPTS } from 'serverx-ts';
+import { FileServer } from 'serverx-ts';
+import { Route } from 'serverx-ts';
+
+const routes: Route[] = [
+
+  {
+    path: '/',
+    methods: ['GET'],
+    handler: FileServer,
+    middlewares: [BinaryTyper, Compressor, CORS],
+    services: [
+      { provide: FILE_SERVER_OPTS, useValue: { root: __dirname } }
+    ]
+  }
+
+];
+
+const awsApp = new AWSLambdaApp(routes);
+export function aws(event, context) {
+  return awsApp.handle(event, context);
+}
+```
+
+> See the [model](https://github.com/mflorence99/serverx-angular/tree/master/model) folder in this repo for more details.
+
+ServeRX-angular follows these steps:
+
+1. Create a temporary directory.
+2. Copy your Angular app to the temporary directory, tweaking the `<base>` tag appropriately and adding any environment variables.
+3. Synthesize a `serverless.yml` file from your deployment file in the temporary directory.
+4. Install the necessary dependencies into a `node_modules` subdirectory using `npm i --silent`.
+5. Internally invoke the TypeScript compiler to transpile the [ServeRX-ts](https://github.com/mflorence99/serverx-ts) hosting code into an `index.js` file in the temporary directory.
+6. Run `serverless deploy`.
+7. Delete the temporary directory.
