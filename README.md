@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/serverx-angular.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/serverx-angular/)
 
-Deploy [Angular](https://angular.io/docs) applications to serverless environments using [ServeRX-ts](https://github.com/mflorence99/serverx-ts).
+Deploy [Angular](https://angular.io/docs) applications without change and with no dependencies to serverless environments using [ServeRX-ts](https://github.com/mflorence99/serverx-ts).
 
 <!-- toc -->
 
