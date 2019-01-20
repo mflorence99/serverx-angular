@@ -80,6 +80,8 @@ export function loadDeployment(fileName: string,
           errors.push(config.messages.MISSING_CREDENTIALS);
         if (!deployment.project)
           errors.push(config.messages.MISSING_PROJECT);
+        if (!deployment.stage)
+          warnings.push(config.messages.OMITTED_STAGE);
         break;
     }
   }
@@ -143,6 +145,9 @@ export function loadServerless(deployment: Deployment): any {
     case 'google':
       serverless.provider.credentials = deployment.credentials;
       serverless.provider.project = deployment.project;
+      // NOTE: stage is optional for Google
+      if (deployment.stage)
+        serverless.provider.stage = deployment.stage;
       break;
   }
   return serverless;

@@ -8,4 +8,10 @@
 
 [![NPM](https://nodei.co/npm/serverx-angular.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/serverx-angular/)
 
-Deploy Angular application to serverless environments using ServeRX-ts.
+Deploy [Angular](https://angular.io/docs) applications to serverless environments using [ServeRX-ts](https://github.com/mflorence99/serverx-ts).
+
+<!-- toc -->
+
+<!-- tocstop -->
+
+## Where's the Beef?

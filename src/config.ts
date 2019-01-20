@@ -36,6 +36,7 @@ export class Config {
     MISSING_SERVICE: '...service is missing',
     MISSING_STAGE: '...stage is missing',
     MISSING_TENANT: '...tenant is missing',
+    OMITTED_STAGE: '...optional stage is omitted'
   };
 
 }

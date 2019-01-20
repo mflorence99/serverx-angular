@@ -8,5 +8,6 @@
   "provider": "google",
   "region": "us-east1",
   "service": "serverx-angular",
+  "stage": "dev",
   "tenant": "mflorence99"
 }

@@ -1,7 +1,7 @@
 {
   "name": "serverx-angular",
   "version": "0.0.1",
-  "description": "Deploy Angular application to serverless environments using ServeRX-ts",
+  "description": "Deploy Angular applications to serverless environments using ServeRX-ts",
   "main": "./dist/index.js",
   "bin": {
     "serverx-angular": "./bin/index.js"
