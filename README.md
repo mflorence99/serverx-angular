@@ -1,10 +1,6 @@
 # ServeRX-angular
 
-[![Build Status](https://travis-ci.org/mflorence99/serverx-angular.svg?branch=master)](https://travis-ci.org/mflorence99/serverx-angular) 
-[![Jest Coverage](./coverage.svg)]()
-[![npm](https://img.shields.io/npm/v/serverx-angular.svg)]()
-[![node](https://img.shields.io/badge/node-8.10-blue.svg)]()
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build Status](https://travis-ci.org/mflorence99/serverx-angular.svg?branch=master)](https://travis-ci.org/mflorence99/serverx-angular) [![Jest Coverage](./coverage.svg)]() [![npm](https://img.shields.io/npm/v/serverx-angular.svg)]() [![node](https://img.shields.io/badge/node-8.10-blue.svg)]() [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 [![NPM](https://nodei.co/npm/serverx-angular.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/serverx-angular/)
 
@@ -12,18 +8,19 @@ Deploy [Angular](https://angular.io/docs) applications without change and with n
 
 <!-- toc -->
 
-- [Where's the Beef?](#wheres-the-beef)
-- [How to Install ServeRX-angular](#how-to-install-serverx-angular)
-  * [Install `serverless`](#install-serverless)
-  * [Install ServeRX-angular](#install-serverx-angular)
-- [How to Prepare Your Angular App](#how-to-prepare-your-angular-app)
-  * [Deployment File Contents](#deployment-file-contents)
-    + [AWS Lambda Example](#aws-lambda-example)
-    + [Google Cloud Functions Example](#google-cloud-functions-example)
-    + [Settings](#settings)
-    + [`environment` Setting](#environment-setting)
-- [How to Deploy Your Angular App](#how-to-deploy-your-angular-app)
-- [How it Works](#how-it-works)
+- [ServeRX-angular](#serverx-angular)
+  - [Where's the Beef?](#wheres-the-beef)
+  - [How to Install ServeRX-angular](#how-to-install-serverx-angular)
+    - [Install `serverless`](#install-serverless)
+    - [Install ServeRX-angular](#install-serverx-angular)
+  - [How to Prepare Your Angular App](#how-to-prepare-your-angular-app)
+    - [Deployment File Contents](#deployment-file-contents)
+      - [AWS Lambda Example](#aws-lambda-example)
+      - [Google Cloud Functions Example](#google-cloud-functions-example)
+      - [Settings](#settings)
+      - [`environment` Setting](#environment-setting)
+  - [How to Deploy Your Angular App](#how-to-deploy-your-angular-app)
+  - [How it Works](#how-it-works)
 
 <!-- tocstop -->
 
@@ -39,7 +36,7 @@ However, ServeRX-angular takes a different approach, with two objectives:
 
 > ServeRX-angular currently supports AWS Lambda and Google Cloud Functions. Support for other providers (for example, Azure) is planned for later.
 
-Of course, the Angular app you deploy is only the front-end half of your entire application. You will also deploy a back-end app, perhaps one that exposes a RESTful API to the front-end and perhaps one that itself is deployed serverless. The experimental [ServeRX-ts](https://github.com/mflorence99/serverx-ts) could serve as the framework for this app. 
+Of course, the Angular app you deploy is only the front-end half of your entire application. You will also deploy a back-end app, perhaps one that exposes a RESTful API to the front-end and perhaps one that itself is deployed serverless. The experimental [ServeRX-ts](https://github.com/mflorence99/serverx-ts) could serve as the framework for this app.
 
 ## How to Install ServeRX-angular
 
@@ -59,9 +56,9 @@ If you don't yet have an account, you'll be prompted to sign up for one. Once yo
 
 `serverless` has excellent [documentation](https://serverless.com/framework/docs/providers) on how it interacts with the providers it supports. In particular, these documents are particularly helpful:
 
-* [AWS - Credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials/) shows how to create an AWS account (if necessary) and store its credentials on your development computer or CI server. Once done, no additional steps are necessary, no matter how many applications you deploy.
+- [AWS - Credentials](https://serverless.com/framework/docs/providers/aws/guide/credentials/) shows how to create an AWS account (if necessary) and store its credentials on your development computer or CI server. Once done, no additional steps are necessary, no matter how many applications you deploy.
 
-* Setting up Google is more complex. [Google - Credentials](https://serverless.com/framework/docs/providers/google/guide/credentials/) shows step-by-step how to create a Google Cloud account, a Google Cloud Project and associated service account, and how to download and store its credentials. You will need to do this for every app you deploy.
+- Setting up Google is more complex. [Google - Credentials](https://serverless.com/framework/docs/providers/google/guide/credentials/) shows step-by-step how to create a Google Cloud account, a Google Cloud Project and associated service account, and how to download and store its credentials. You will need to do this for every app you deploy.
 
 ### Install ServeRX-angular
 
@@ -88,15 +85,13 @@ Create a deployment file for your app following the examples below. You may have
 
 ```json
 {
-  "app": "serverx-angular",
   "environment": {
     "BACKEND_ENDPOINT": "https://admin.appcast.cloud"
   },
   "provider": "aws",
   "region": "us-east-1",
   "service": "serverx-angular",
-  "stage": "dev",
-  "tenant": "mflorence99"
+  "stage": "dev"
 }
 ```
 
@@ -104,7 +99,6 @@ Create a deployment file for your app following the examples below. You may have
 
 ```json
 {
-  "app": "serverx-angular",
   "credentials": "~/.gcloud/gcf-project-45679.json",
   "environment": {
     "BACKEND_ENDPOINT": "https://admin.appcast.cloud"
@@ -113,24 +107,21 @@ Create a deployment file for your app following the examples below. You may have
   "provider": "google",
   "region": "us-east1",
   "service": "serverx-angular",
-  "stage": "dev",
-  "tenant": "mflorence99"
+  "stage": "dev"
 }
 ```
 
 #### Settings
 
-Setting | Required? | Explanation
---- | --- | ---
-`app` | yes | The name of your app, as on the [serverless dashboard](https://dashboard.serverless.com)
-`credentials` | Google only | The location of the Google credentials for this project
-`environment` | no | See below
-`project` | Google only | The name of your Google Cloud project
-`provider` | yes | Must be either `aws` or `google`
-`region` | yes | The provider's region code
-`service` | yes | TODO: Use the same name as for `app`
-`stage` | Optional for Google | The provider's stage name (eg: `dev`)
-`tenant` | yes | Your `serverless` user name
+| Setting | Required? | Explanation |
+| --- | --- | --- |
+| `credentials` | Google only | The location of the Google credentials for this project |
+| `environment` | no | See below |
+| `project` | Google only | The name of your Google Cloud project |
+| `provider` | yes | Must be either `aws` or `google` |
+| `region` | yes | The provider's region code |
+| `service` | yes | TODO: Use the same name as for `app` |
+| `stage` | Optional for Google | The provider's stage name (eg: `dev`) |
 
 #### `environment` Setting
 
@@ -142,7 +133,9 @@ If you supply the `environment` setting, its values are inserted into your `inde
 
 ```html
 <script>
-  var ENV = { /* your settings */ };
+  var ENV = {
+    /* your settings */
+  };
 </script>
 ```
 
@@ -160,13 +153,13 @@ serverx-angular --app this/that/dist/app-name --deploy somewhere/else/app-name.j
 
 Take note of the URL generated for your app. For reference, the sample app has been deployed to both AWS and Google Cloud at these URLs:
 
-* https://v1pzo1e2d1.execute-api.us-east-1.amazonaws.com/dev/
-* https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/
+- https://v1pzo1e2d1.execute-api.us-east-1.amazonaws.com/dev/
+- https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/
 
 > TODO: When running in headless environments, it is possible to predict the app's URL.
 
 ## How it Works
- 
+
 ServeRX-angular uses [ServeRX-ts](https://github.com/mflorence99/serverx-ts) to host your Angular app. The AWS Lambda and Google Cloud Functions versions of the hosting code are almost identical. Here is the AWS Lambda version:
 
 ```ts
@@ -181,17 +174,13 @@ import { FileServer } from 'serverx-ts';
 import { Route } from 'serverx-ts';
 
 const routes: Route[] = [
-
   {
     path: '/',
     methods: ['GET'],
     handler: FileServer,
     middlewares: [BinaryTyper, Compressor, CORS],
-    services: [
-      { provide: FILE_SERVER_OPTS, useValue: { root: __dirname } }
-    ]
+    services: [{ provide: FILE_SERVER_OPTS, useValue: { root: __dirname } }]
   }
-
 ];
 
 const awsApp = new AWSLambdaApp(routes);

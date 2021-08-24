@@ -1,5 +1,4 @@
 {
-  "app": "serverx-angular",
   "credentials": "~/.gcloud/gcf-project-45679.json",
   "environment": {
     "BACKEND_ENDPOINT": "https://admin.appcast.cloud"
@@ -8,6 +7,5 @@
   "provider": "google",
   "region": "us-east1",
   "service": "serverx-angular",
-  "stage": "dev",
-  "tenant": "mflorence99"
+  "stage": "dev"
 }

@@ -1,20 +1,20 @@
 service: xxx
 
-app: xxx
-tenant: xxx
-
 provider:
   name: aws
-  runtime: nodejs8.10
-  stage: xxx
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
   region: xxx
+  stage: xxx
 
 package:
-  exclude:
-   - node_modules/axios/**
-   - node_modules/googleapis/**
-   - node_modules/serverless-apigw-binary/**
-   - node_modules/serverless-google-cloudfunctions/**
+  patterns:
+    - '!node_modules/axios/**'
+    - '!node_modules/googleapis/**'
+    - '!node_modules/rimraf/**'
+    - '!node_modules/serverless-apigw-binary/**'
+    - '!node_modules/serverless-google-cloudfunctions/**'
+    - '!node_modules/typescript/**'
 
 plugins:
   - serverless-apigw-binary
@@ -29,4 +29,4 @@ functions:
     handler: index.aws
     events:
       - http: ANY /
-      - http: 'ANY {proxy+}'
+      - http: 'ANY /{proxy+}'

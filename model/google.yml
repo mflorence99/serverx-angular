@@ -5,7 +5,7 @@ tenant: xxx
 
 package:
   exclude:
-   - node_modules/**
+    - node_modules/**
 
 provider:
   name: google
