@@ -2,7 +2,6 @@ import { config } from './config';
 import { loadApp } from './utils';
 import { loadDeployment } from './utils';
 import { loadIndex } from './utils';
-import { loadNgSw } from './utils';
 import { loadServerless } from './utils';
 import { transpileServeRX } from './utils';
 
@@ -193,27 +192,6 @@ describe('loadDeployment unit tests', () => {
       );
       const index = loadIndex(deployment, './sample/app');
       expect(index).toContain('<base href="/gcf/">');
-    });
-  });
-
-  /**
-   * loadNgSw tests
-   */
-
-  describe('loadNgSw unit tests', () => {
-    test('properly configure ngsw.json from AWS deployment', () => {
-      const errors = [],
-        warnings = [],
-        infos = [];
-      const deployment = loadDeployment(
-        './sample/deploy/aws.json',
-        errors,
-        warnings,
-        infos
-      );
-      const ngsw = loadNgSw(deployment, './sample/app');
-      expect(ngsw).toContain('"index": "/dev/index.html"');
-      expect(ngsw).toContain('"/dev/main.401eff0892b85fa1d11d.js",');
     });
   });
 

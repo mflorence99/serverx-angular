@@ -1,16 +1,16 @@
 import { Deployment } from './utils';
 
+import { baseHref } from './utils';
 import { loadApp } from './utils';
 import { loadDeployment } from './utils';
 import { loadIndex } from './utils';
-import { loadNgSw } from './utils';
 import { loadServerless } from './utils';
 import { transpileServeRX } from './utils';
 
 import * as cp from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as tmp from 'tmp';
+import * as rimraf from 'rimraf';
 import * as yaml from 'js-yaml';
 import * as yargs from 'yargs';
 
@@ -42,7 +42,7 @@ const warnings: string[] = [];
 const infos: string[] = [];
 
 const fileName = argv['deploy'];
-console.log(chalk.blueBright(`Loading deployment file ${fileName}...`));
+console.log(chalk.blue(`Loading deployment file ${fileName}...`));
 const deployment: Deployment = loadDeployment(
   fileName,
   errors,
@@ -51,7 +51,7 @@ const deployment: Deployment = loadDeployment(
 );
 
 const appDir = argv['app'];
-console.log(chalk.blueBright(`Loading app directory ${appDir}...`));
+console.log(chalk.blue(`Loading app directory ${appDir}...`));
 const files: string[] = loadApp(appDir, errors, warnings, infos);
 
 errors.forEach((error) => console.log(chalk.red(error)));
@@ -67,12 +67,6 @@ if (errors.length > 0) process.exit(1);
 const index = loadIndex(deployment, appDir);
 
 /**
- * Load the ngsw.json for this deployment
- */
-
-const ngsw = loadNgSw(deployment, appDir);
-
-/**
  * Load the serverless.yml for this provider
  */
 
@@ -82,42 +76,57 @@ const serverless = loadServerless(deployment);
  * Create a temp directory and start writing to it
  */
 
-tmp.setGracefulCleanup();
-const tmpDir = tmp.dirSync({ unsafeCleanup: true });
-console.log(chalk.blueBright(`Building serverless app in ${tmpDir.name}...`));
+const tmpDir = path.join(path.dirname(appDir), 'tmp');
+rimraf.sync(tmpDir);
+fs.mkdirSync(tmpDir, { recursive: true });
+console.log(chalk.blue(`Building serverless app in ${tmpDir}...`));
 
 // all the app files
+console.log(chalk.blue('...copying app files'));
 files.forEach((f) => {
-  const t = path.join(tmpDir.name, f.substr(appDir.length));
+  const t = path.join(tmpDir, f.substr(appDir.length));
   try {
-    fs.copyFileSync(f, path.join(tmpDir.name, f.substr(appDir.length)));
+    fs.copyFileSync(f, path.join(tmpDir, f.substr(appDir.length)));
   } catch (error) {
     fs.mkdirSync(t, { recursive: true });
   }
 });
 
 // overwrite index.html with our tweaked version
-fs.writeFileSync(path.join(tmpDir.name, 'index.html'), index);
+console.log(chalk.blue('...rebuilding index.html'));
+fs.writeFileSync(path.join(tmpDir, 'index.html'), index);
 
-// overwrite ngsw.json with our tweaked version
-if (ngsw) fs.writeFileSync(path.join(tmpDir.name, 'ngsw.json'), ngsw);
+// we must rebuild ngsw.json because we tweaked index.html
+if (fs.existsSync(path.join(tmpDir, 'ngsw.json'))) {
+  console.log(chalk.blue('...rebuilding ngsw.json'));
+  let ngswDir = appDir;
+  while (!fs.existsSync(path.join(ngswDir, 'ngsw-config.json')))
+    ngswDir = path.dirname(ngswDir);
+  const base = baseHref(deployment);
+  const ngswConfig = path.join(ngswDir, 'ngsw-config.json');
+  console.log(chalk.yellow(`npx ngsw-config ${tmpDir} ${ngswConfig} /${base}`));
+  cp.execSync(`npx ngsw-config ${tmpDir} ${ngswConfig} /${base}`, {
+    cwd: path.dirname(ngswDir),
+    stdio: 'inherit'
+  });
+}
 
 // write out serverless.yml
-fs.writeFileSync(
-  path.join(tmpDir.name, 'serverless.yml'),
-  yaml.dump(serverless)
-);
+console.log(chalk.blue('...emitting serverless.yml'));
+fs.writeFileSync(path.join(tmpDir, 'serverless.yml'), yaml.dump(serverless));
 
 // emit package.json and install packages
+console.log(chalk.blue('...installing dependencies'));
 fs.copyFileSync(
   path.join(__dirname, './model/package.json'),
-  path.join(tmpDir.name, 'package.json')
+  path.join(tmpDir, 'package.json')
 );
-cp.execSync('npm i --silent', { cwd: tmpDir.name });
+cp.execSync('npm i --silent', { cwd: tmpDir });
 
 // transpile ServrRX-ts harness and emit index.js
+console.log(chalk.blue('...transpiling ServeRX-ts driver'));
 const serverx = transpileServeRX(deployment);
-fs.writeFileSync(path.join(tmpDir.name, 'index.js'), serverx.outputText);
+fs.writeFileSync(path.join(tmpDir, 'index.js'), serverx.outputText);
 
 // finally! -- serverless deploy
-cp.execSync('serverless deploy', { cwd: tmpDir.name, stdio: 'inherit' });
+cp.execSync('serverless deploy', { cwd: tmpDir, stdio: 'inherit' });

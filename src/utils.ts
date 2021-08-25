@@ -20,6 +20,23 @@ export interface Deployment {
 }
 
 /**
+ * Find the base href for this deployment
+ */
+
+export function baseHref(deployment: Deployment): string {
+  let base;
+  switch (deployment.provider) {
+    case 'aws':
+      base = `${deployment.stage}`;
+      break;
+    case 'google':
+      base = 'gcf';
+      break;
+  }
+  return base;
+}
+
+/**
  * Load and validate a deployment YAML file
  */
 
@@ -91,16 +108,8 @@ export function loadDeployment(
 export function loadIndex(deployment: Deployment, appDir: string): string {
   let index = fs.readFileSync(path.join(appDir, 'index.html'), 'utf8');
   // replace base tag
-  let base;
-  switch (deployment.provider) {
-    case 'aws':
-      base = `<base href="/${deployment.stage}/">`;
-      break;
-    case 'google':
-      base = '<base href="/gcf/">';
-      break;
-  }
-  index = index.replace(/<base href=".*">/, base);
+  const base = baseHref(deployment);
+  index = index.replace(/<base href=".*">/, `<base href="/${base}/">`);
   // inject any env vars
   if (deployment.environment) {
     const ix = index.indexOf('</head>');
@@ -114,42 +123,6 @@ export function loadIndex(deployment: Deployment, appDir: string): string {
     }
   }
   return index;
-}
-
-/**
- * Load the ngsw.json file for this deployment
- *
- * NOTE: we need to tweak this file before writing it
- */
-
-export function loadNgSw(deployment: Deployment, appDir: string): string {
-  const fn = path.join(appDir, 'ngsw.json');
-  if (fs.existsSync(fn)) {
-    const ngsw = JSON.parse(fs.readFileSync(fn, 'utf8'));
-    // determine base
-    let base;
-    switch (deployment.provider) {
-      case 'aws':
-        base = `/${deployment.stage}/`;
-        break;
-      case 'google':
-        base = '/gcf/';
-        break;
-    }
-    // replace index
-    const re = /^\//;
-    ngsw.index = ngsw.index.replace(re, base);
-    // replace all urls in asset groups
-    ngsw.assetGroups.forEach((ag) => {
-      ag.urls = ag.urls.map((url) => url.replace(re, base));
-    });
-    // replace all urls in hashtable
-    ngsw.hashTable = Object.keys(ngsw.hashTable).reduce((acc, key) => {
-      acc[key.replace(re, base)] = ngsw.hashTable[key];
-      return acc;
-    }, {});
-    return JSON.stringify(ngsw, null, 2);
-  } else return null;
 }
 
 /**
