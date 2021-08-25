@@ -148,12 +148,12 @@ Front-end code can now use these settings, for example, to determine the correct
 Now all the setup is out of the way, deployment is easy. In fact, a sample Angular app and corresponding deployment settings are supplied in the [sample](https://github.com/mflorence99/serverx-angular/tree/master/sample) folder of this repo.
 
 ```sh
-serverx-angular --app this/that/dist/app-name --deploy somewhere/else/app-name.json
+serverx-angular --app this/that/dist --deploy somewhere/else/app-name.json
 ```
 
 Take note of the URL generated for your app. For reference, the sample app has been deployed to both AWS and Google Cloud at these URLs:
 
-- https://v1pzo1e2d1.execute-api.us-east-1.amazonaws.com/dev/
+- https://gb1putt7ah.execute-api.us-east-1.amazonaws.com/dev
 - https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/
 
 > TODO: When running in headless environments, it is possible to predict the app's URL.

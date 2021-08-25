@@ -19,7 +19,8 @@
     "prettier": "prettier --write .",
     "sample-aws": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json",
     "sample-google": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/google.json",
-    "test": "jest --coverage && make-coverage-badge && mv ./coverage/badge.svg ./coverage.svg",
+    "test": "jest --runInBand --coverage && make-coverage-badge && mv ./coverage/badge.svg ./coverage.svg",
+    "test:only": "jest --coverage=false -- %1",
     "toc": "markdown-toc -i README.md"
   },
   "dependencies": {
