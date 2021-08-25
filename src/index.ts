@@ -80,9 +80,14 @@ const tmpDir = tmp.dirSync({ unsafeCleanup: true });
 console.log(chalk.blueBright(`Building serverless app in ${tmpDir.name}...`));
 
 // all the app files
-files.forEach((f) =>
-  fs.copyFileSync(f, path.join(tmpDir.name, f.substr(appDir.length)))
-);
+files.forEach((f) => {
+  const t = path.join(tmpDir.name, f.substr(appDir.length));
+  try {
+    fs.copyFileSync(f, path.join(tmpDir.name, f.substr(appDir.length)));
+  } catch (error) {
+    fs.mkdirSync(t, { recursive: true });
+  }
+});
 
 // overwrite index.html with our tweaked version
 fs.writeFileSync(path.join(tmpDir.name, 'index.html'), index);

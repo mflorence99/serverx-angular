@@ -25,7 +25,7 @@ describe('loadApp unit tests', () => {
       warnings = [],
       infos = [];
     const files = loadApp('./sample/app', errors, warnings, infos);
-    expect(files.length).toEqual(7);
+    expect(files.length).toEqual(8);
     expect(errors.length).toEqual(0);
     expect(warnings.length).toEqual(0);
   });
