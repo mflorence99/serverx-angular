@@ -136,8 +136,10 @@ export function loadNgSw(deployment: Deployment, appDir: string): string {
         base = '/gcf/';
         break;
     }
-    // replace all urls in asset groups
+    // replace index
     const re = /^\//;
+    ngsw.index = ngsw.index.replace(re, base);
+    // replace all urls in asset groups
     ngsw.assetGroups.forEach((ag) => {
       ag.urls = ag.urls.map((url) => url.replace(re, base));
     });
