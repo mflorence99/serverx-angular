@@ -1,6 +1,6 @@
 {
   "name": "serverx-angular",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Deploy Angular applications to serverless environments using ServeRX-ts",
   "license": "MIT",
   "author": "Mark Florence",
