@@ -212,7 +212,7 @@ describe('loadDeployment unit tests', () => {
         infos
       );
       const ngsw = loadNgSw(deployment, './sample/app');
-      expect(ngsw).toContain('"index": "/dev/index.html"');
+      expect(ngsw).toContain('"index": "/index.html"');
       expect(ngsw).toContain('"/dev/main.401eff0892b85fa1d11d.js",');
     });
   });
