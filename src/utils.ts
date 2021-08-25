@@ -117,6 +117,42 @@ export function loadIndex(deployment: Deployment, appDir: string): string {
 }
 
 /**
+ * Load the ngsw.json file for this deployment
+ *
+ * NOTE: we need to tweak this file before writing it
+ */
+
+export function loadNgSw(deployment: Deployment, appDir: string): string {
+  const fn = path.join(appDir, 'ngsw.json');
+  if (fs.existsSync(fn)) {
+    const ngsw = JSON.parse(fs.readFileSync(fn, 'utf8'));
+    // determine base
+    let base;
+    switch (deployment.provider) {
+      case 'aws':
+        base = `/${deployment.stage}/`;
+        break;
+      case 'google':
+        base = '/gcf/';
+        break;
+    }
+    // replace index
+    const re = /^\//;
+    ngsw.index = ngsw.index.replace(re, base);
+    // replace all urls in asset groups
+    ngsw.assetGroups.forEach((ag) => {
+      ag.urls = ag.urls.map((url) => url.replace(re, base));
+    });
+    // replace all urls in hashtable
+    ngsw.hashTable = Object.keys(ngsw.hashTable).reduce((acc, key) => {
+      acc[key.replace(re, base)] = ngsw.hashTable[key];
+      return acc;
+    }, {});
+    return JSON.stringify(ngsw, null, 2);
+  } else return null;
+}
+
+/**
  * Load the serverless YAML file
  *
  * NOTE: simplest possible logic until we later add other providers

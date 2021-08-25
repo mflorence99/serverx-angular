@@ -1,0 +1,67 @@
+{
+  "configVersion": 1,
+  "timestamp": 1629890035673,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/3rdpartylicenses.txt",
+        "/index.html",
+        "/main.401eff0892b85fa1d11d.js",
+        "/polyfills.c6871e56cb80756a5498.js",
+        "/runtime.ec2944dd8b20ec099bf3.js",
+        "/styles.3bb2a9d4949b7dc120a9.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/favicon.ico"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "/assets/boundary.json": "5eb9beae13efb867c9f5953eb3a64331fcb6428e",
+    "/assets/browserconfig.xml": "08b260518630aab7b6e1de627cb56e4639bf2c9d",
+    "/assets/build.json": "367ef7498a94bb5d44e9f7cba8624fbca54f8f0d",
+    "/assets/center/tile-0-0.jpeg": "ea1c3b63496d5aedb1708505736960383cb49a2a",
+    "/assets/center/tile-0-1.jpeg": "30697868bacd2c84b17c665fb664e15df541d4cf",
+    "/assets/center/tile-0-10.jpeg": "3152b6ed72898d92748f830293ba665ee39e8362",
+    "/assets/center/tile-0-11.jpeg": "668ab674a3f50f100d8d6ec53077e7de506abb2c",
+    "/svg/search-sharp.svg": "c5fb6e4dd5cd8309034f91c84f5ed8d68a1d8cd6",
+    "/vendor.js": "f7539bf15f5adbbe662ddbf439b75196e19904b2"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ],
+  "navigationRequestStrategy": "performance"
+}

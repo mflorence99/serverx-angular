@@ -3,6 +3,7 @@ import { Deployment } from './utils';
 import { loadApp } from './utils';
 import { loadDeployment } from './utils';
 import { loadIndex } from './utils';
+import { loadNgSw } from './utils';
 import { loadServerless } from './utils';
 import { transpileServeRX } from './utils';
 
@@ -66,6 +67,12 @@ if (errors.length > 0) process.exit(1);
 const index = loadIndex(deployment, appDir);
 
 /**
+ * Load the ngsw.json for this deployment
+ */
+
+const ngsw = loadNgSw(deployment, appDir);
+
+/**
  * Load the serverless.yml for this provider
  */
 
@@ -91,6 +98,9 @@ files.forEach((f) => {
 
 // overwrite index.html with our tweaked version
 fs.writeFileSync(path.join(tmpDir.name, 'index.html'), index);
+
+// overwrite ngsw.json with our tweaked version
+if (ngsw) fs.writeFileSync(path.join(tmpDir.name, 'ngsw.json'), ngsw);
 
 // write out serverless.yml
 fs.writeFileSync(
