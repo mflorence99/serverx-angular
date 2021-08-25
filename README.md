@@ -154,7 +154,8 @@ serverx-angular --app this/that/dist --deploy somewhere/else/app-name.json
 Take note of the URL generated for your app. For reference, the sample app has been deployed to both AWS and Google Cloud at these URLs:
 
 - https://gb1putt7ah.execute-api.us-east-1.amazonaws.com/dev
-- https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/
+
+-> GCF sample https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/ is not currently operational
 
 > TODO: When running in headless environments, it is possible to predict the app's URL.
 
@@ -189,7 +190,7 @@ export function aws(event, context) {
 }
 ```
 
-> See the [model](https://github.com/mflorence99/serverx-angular/tree/master/model) folder in this repo for more details.
+> See the [model](https://github.com/mflorence99/serverx-angular/tree/master/src/model) folder in this repo for more details.
 
 ServeRX-angular follows these steps:
 

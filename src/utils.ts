@@ -123,7 +123,7 @@ export function loadIndex(deployment: Deployment, appDir: string): string {
  */
 
 export function loadServerless(deployment: Deployment): any {
-  const fileName = `./model/${deployment.provider}.yml`;
+  const fileName = path.join(__dirname, `./model/${deployment.provider}.yml`);
   const serverless: any = yaml.load(fs.readFileSync(fileName, 'utf8'));
   // jam in common deployment settings
   serverless.service = deployment.service;
@@ -148,7 +148,7 @@ export function loadServerless(deployment: Deployment): any {
  */
 
 export function transpileServeRX(deployment: Deployment): any {
-  const fileName = `./model/${deployment.provider}.ts`;
+  const fileName = path.join(__dirname, `./model/${deployment.provider}.ts`);
   return ts.transpileModule(fs.readFileSync(fileName, 'utf8'), {
     compilerOptions: config.compilerOptions
   });

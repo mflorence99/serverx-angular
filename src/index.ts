@@ -94,7 +94,10 @@ fs.writeFileSync(
 );
 
 // emit package.json and install packages
-fs.copyFileSync('./model/package.json', path.join(tmpDir.name, 'package.json'));
+fs.copyFileSync(
+  path.join(__dirname, './model/package.json'),
+  path.join(tmpDir.name, 'package.json')
+);
 cp.execSync('npm i --silent', { cwd: tmpDir.name });
 
 // transpile ServrRX-ts harness and emit index.js
