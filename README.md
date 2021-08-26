@@ -52,7 +52,7 @@ serverless login
 
 If you don't yet have an account, you'll be prompted to sign up for one. Once you login, you'll be directed to the [serverless dashboard](https://dashboard.serverless.com) where you'll need to create an app for each serverless Angular app that you intend to deploy.
 
-> The name you give to your app here will later be used as the `app` setting to ServeRX-angular and your `serverless` user name will be used as the `tenant` setting.
+> The name you give to your app here will later be used as the `service` setting to ServeRX-angular.
 
 `serverless` has excellent [documentation](https://serverless.com/framework/docs/providers) on how it interacts with the providers it supports. In particular, these documents are particularly helpful:
 
@@ -148,14 +148,16 @@ Front-end code can now use these settings, for example, to determine the correct
 Now all the setup is out of the way, deployment is easy. In fact, a sample Angular app and corresponding deployment settings are supplied in the [sample](https://github.com/mflorence99/serverx-angular/tree/master/sample) folder of this repo.
 
 ```sh
-serverx-angular --app this/that/dist --deploy somewhere/else/app-name.json
+serverx-angular --app ./dist --deploy /somewhere/else/app-name.json
 ```
+
+> It is recommended to run `serverx-angular` from your project's root directory. A `tmp` folder will be created, which you should add to your `.gitignore`.
 
 Take note of the URL generated for your app. For reference, the sample app has been deployed to both AWS and Google Cloud at these URLs:
 
 - https://gb1putt7ah.execute-api.us-east-1.amazonaws.com/dev
 
--> GCF sample https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/ is not currently operational
+> GCF sample https://us-east1-gcf-project-45679.cloudfunctions.net/gcf/ is not currently operational
 
 > TODO: When running in headless environments, it is possible to predict the app's URL.
 
@@ -164,8 +166,6 @@ Take note of the URL generated for your app. For reference, the sample app has b
 ServeRX-angular uses [ServeRX-ts](https://github.com/mflorence99/serverx-ts) to host your Angular app. The AWS Lambda and Google Cloud Functions versions of the hosting code are almost identical. Here is the AWS Lambda version:
 
 ```ts
-import 'reflect-metadata';
-
 import { AWSLambdaApp } from 'serverx-ts';
 import { BinaryTyper } from 'serverx-ts';
 import { Compressor } from 'serverx-ts';
