@@ -15,6 +15,8 @@
     "build": "npm run lint && npm run test && rimraf dist && tsc && cp -R src/model/ dist",
     "clean:deps": "rm -rf node_modules && rm package-lock.json && npm install",
     "deploy:npm": "./bin/deploy-npm.sh",
+    "dryrun": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json --dryrun",
+    "help": "npm run build && node dist/index.js",
     "lint": "eslint ./src/*.ts",
     "prettier": "prettier --write .",
     "sample-aws": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json",
@@ -28,9 +30,10 @@
     "js-yaml": "^4",
     "rimraf": "^3",
     "serverless-apigw-binary": "^0.4.4",
+    "serverless-domain-manager": "^5",
     "serverless-google-cloudfunctions": "*",
     "serverx-ts": "latest",
-    "typescript": "^4",
+    "typescript": "4.3",
     "yargs": "^17"
   },
   "devDependencies": {
@@ -38,7 +41,6 @@
     "@types/jest": "^27",
     "@types/js-yaml": "^4",
     "@types/node": "^16",
-    "@types/tmp": "^0.2.1",
     "@types/yargs": "^17",
     "@typescript-eslint/eslint-plugin": "^4",
     "@typescript-eslint/parser": "^4",

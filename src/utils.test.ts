@@ -68,6 +68,31 @@ describe('loadDeployment unit tests', () => {
       warnings,
       infos
     );
+    expect(deployment.certificateName).toBeUndefined();
+    expect(deployment.domainName).toBeUndefined();
+    expect(deployment.environment.BACKEND_ENDPOINT).toEqual(
+      'https://admin.appcast.cloud'
+    );
+    expect(deployment.provider).toEqual('aws');
+    expect(deployment.region).toEqual('us-east-1');
+    expect(deployment.service).toEqual('serverx-angular');
+    expect(deployment.stage).toEqual('dev');
+    expect(errors.length).toEqual(0);
+    expect(warnings.length).toEqual(0);
+  });
+
+  test('an AWS deployment file with a custom domain is loaded successfully', () => {
+    const errors = [],
+      warnings = [],
+      infos = [];
+    const deployment = loadDeployment(
+      './sample/deploy/aws-custom.json',
+      errors,
+      warnings,
+      infos
+    );
+    expect(deployment.certificateName).toEqual('*.washingtonnh.online');
+    expect(deployment.domainName).toEqual('lots.washingtonnh.online');
     expect(deployment.environment.BACKEND_ENDPOINT).toEqual(
       'https://admin.appcast.cloud'
     );
@@ -211,6 +236,29 @@ describe('loadDeployment unit tests', () => {
         infos
       );
       const serverless = loadServerless(deployment);
+      expect(serverless.custom.customDomain).toBeUndefined();
+      expect(serverless.service).toEqual(deployment.service);
+      expect(serverless.provider.stage).toEqual(deployment.stage);
+      expect(serverless.provider.region).toEqual(deployment.region);
+    });
+
+    test('properly configure serverless.yml from AWS deployment with custom domain', () => {
+      const errors = [],
+        warnings = [],
+        infos = [];
+      const deployment = loadDeployment(
+        './sample/deploy/aws-custom.json',
+        errors,
+        warnings,
+        infos
+      );
+      const serverless = loadServerless(deployment);
+      expect(serverless.custom.customDomain.certificateName).toEqual(
+        '*.washingtonnh.online'
+      );
+      expect(serverless.custom.customDomain.domainName).toEqual(
+        'lots.washingtonnh.online'
+      );
       expect(serverless.service).toEqual(deployment.service);
       expect(serverless.provider.stage).toEqual(deployment.stage);
       expect(serverless.provider.region).toEqual(deployment.region);

@@ -91,7 +91,9 @@ Create a deployment file for your app following the examples below. You may have
   "provider": "aws",
   "region": "us-east-1",
   "service": "serverx-angular",
-  "stage": "dev"
+  "stage": "dev",
+  "domainName": "lots.washingtonnh.online",
+  "certificateName": "*.washingtonnh.online"
 }
 ```
 
@@ -115,7 +117,9 @@ Create a deployment file for your app following the examples below. You may have
 
 | Setting | Required? | Explanation |
 | --- | --- | --- |
+| `certificateName` | Optional for AWS | The name of the certificate for a custom domain |
 | `credentials` | Google only | The location of the Google credentials for this project |
+| `domainName` | Optional for AWS | Custom domain name |
 | `environment` | no | See below |
 | `project` | Google only | The name of your Google Cloud project |
 | `provider` | yes | Must be either `aws` or `google` |

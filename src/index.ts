@@ -28,6 +28,8 @@ const argv = yargs
   .describe('d', 'Deployment JSON or YAML file')
   .alias('a', 'app')
   .describe('a', 'Directory containing Angular app')
+  .alias('x', 'dryrun')
+  .describe('x', "Dry run, don't deploy")
   .demandOption(['deploy', 'app'])
   .help(false)
   .version(false)
@@ -129,4 +131,5 @@ const serverx = transpileServeRX(deployment);
 fs.writeFileSync(path.join(tmpDir, 'index.js'), serverx.outputText);
 
 // finally! -- serverless deploy
-cp.execSync('serverless deploy', { cwd: tmpDir, stdio: 'inherit' });
+if (!argv['dryrun'])
+  cp.execSync('serverless deploy', { cwd: tmpDir, stdio: 'inherit' });

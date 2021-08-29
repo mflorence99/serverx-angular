@@ -10,7 +10,9 @@ import * as yaml from 'js-yaml';
  */
 
 export interface Deployment {
+  certificateName?: string;
   credentials?: string;
+  domainName?: string;
   environment?: { [k: string]: string };
   project?: string;
   provider?: string;
@@ -141,6 +143,15 @@ export function loadServerless(deployment: Deployment): any {
   switch (deployment.provider) {
     case 'aws':
       serverless.provider.stage = deployment.stage;
+      if (!deployment.domainName) delete serverless.custom.customDomain;
+      else {
+        if (deployment.certificateName)
+          serverless.custom.customDomain.certificateName =
+            deployment.certificateName;
+        else delete serverless.custom.customDomain.certificateName;
+        serverless.custom.customDomain.domainName = deployment.domainName;
+        serverless.custom.customDomain.stage = deployment.stage;
+      }
       break;
     case 'google':
       serverless.provider.credentials = deployment.credentials;
