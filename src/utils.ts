@@ -23,17 +23,21 @@ export interface Deployment {
 
 /**
  * Find the base href for this deployment
+ *
+ * NOTE: empty if custom domain
  */
 
 export function baseHref(deployment: Deployment): string {
-  let base;
-  switch (deployment.provider) {
-    case 'aws':
-      base = `${deployment.stage}`;
-      break;
-    case 'google':
-      base = 'gcf';
-      break;
+  let base = '';
+  if (!deployment.domainName) {
+    switch (deployment.provider) {
+      case 'aws':
+        base = `${deployment.stage}`;
+        break;
+      case 'google':
+        base = 'gcf';
+        break;
+    }
   }
   return base;
 }
@@ -111,7 +115,8 @@ export function loadIndex(deployment: Deployment, appDir: string): string {
   let index = fs.readFileSync(path.join(appDir, 'index.html'), 'utf8');
   // replace base tag
   const base = baseHref(deployment);
-  index = index.replace(/<base href=".*">/, `<base href="/${base}/">`);
+  if (base)
+    index = index.replace(/<base href=".*">/, `<base href="/${base}/">`);
   // inject any env vars
   if (deployment.environment) {
     const ix = index.indexOf('</head>');
