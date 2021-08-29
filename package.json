@@ -14,7 +14,7 @@
   "scripts": {
     "build": "npm run lint && npm run test && rimraf dist && tsc && cp -R src/model/ dist",
     "clean:deps": "rm -rf node_modules && rm package-lock.json && npm install",
-    "lib": "npm run build && npm version patch && npm publish",
+    "deploy:npm": "./bin/deploy-npm.sh",
     "lint": "eslint ./src/*.ts",
     "prettier": "prettier --write .",
     "sample-aws": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json",
