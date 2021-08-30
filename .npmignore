@@ -1,5 +1,6 @@
 /*
 !/bin/
 !/dist/
+/bin/**/*.sh
 /dist/**/*.test.d.ts
 /dist/**/*.test.js

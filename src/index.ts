@@ -81,14 +81,18 @@ const serverless = loadServerless(deployment);
 const tmpDir = path.join(path.dirname(appDir), 'tmp');
 rimraf.sync(tmpDir);
 fs.mkdirSync(tmpDir, { recursive: true });
+
+const deployDir = path.join(tmpDir, 'deploy');
+fs.mkdirSync(deployDir, { recursive: true });
+
 console.log(chalk.blue(`Building serverless app in ${tmpDir}...`));
 
 // all the app files
 console.log(chalk.blue('...copying app files'));
 files.forEach((f) => {
-  const t = path.join(tmpDir, f.substr(appDir.length));
+  const t = path.join(deployDir, f.substr(appDir.length));
   try {
-    fs.copyFileSync(f, path.join(tmpDir, f.substr(appDir.length)));
+    fs.copyFileSync(f, path.join(deployDir, f.substr(appDir.length)));
   } catch (error) {
     fs.mkdirSync(t, { recursive: true });
   }
@@ -96,18 +100,20 @@ files.forEach((f) => {
 
 // overwrite index.html with our tweaked version
 console.log(chalk.blue('...rebuilding index.html'));
-fs.writeFileSync(path.join(tmpDir, 'index.html'), index);
+fs.writeFileSync(path.join(deployDir, 'index.html'), index);
 
 // we must rebuild ngsw.json because we tweaked index.html
-if (fs.existsSync(path.join(tmpDir, 'ngsw.json'))) {
+if (fs.existsSync(path.join(deployDir, 'ngsw.json'))) {
   console.log(chalk.blue('...rebuilding ngsw.json'));
   let ngswDir = appDir;
   while (!fs.existsSync(path.join(ngswDir, 'ngsw-config.json')))
     ngswDir = path.dirname(ngswDir);
   const base = baseHref(deployment);
   const ngswConfig = path.join(ngswDir, 'ngsw-config.json');
-  console.log(chalk.yellow(`npx ngsw-config ${tmpDir} ${ngswConfig} /${base}`));
-  cp.execSync(`npx ngsw-config ${tmpDir} ${ngswConfig} /${base}`, {
+  console.log(
+    chalk.yellow(`npx ngsw-config ${deployDir} ${ngswConfig} /${base}`)
+  );
+  cp.execSync(`npx ngsw-config ${deployDir} ${ngswConfig} /${base}`, {
     cwd: path.dirname(ngswDir),
     stdio: 'inherit'
   });
@@ -115,21 +121,45 @@ if (fs.existsSync(path.join(tmpDir, 'ngsw.json'))) {
 
 // write out serverless.yml
 console.log(chalk.blue('...emitting serverless.yml'));
-fs.writeFileSync(path.join(tmpDir, 'serverless.yml'), yaml.dump(serverless));
+fs.writeFileSync(path.join(deployDir, 'serverless.yml'), yaml.dump(serverless));
 
-// emit package.json and install packages
-console.log(chalk.blue('...installing dependencies'));
+// install packages for deployment
+console.log(chalk.blue('...installing deployment dependencies'));
+fs.copyFileSync(
+  path.join(__dirname, './model/package.json'),
+  path.join(deployDir, 'package.json')
+);
+cp.execSync('npm i --silent serverx-ts', { cwd: deployDir });
+
+// now do the same one level up for the serverless build
+console.log(chalk.blue('...installing build dependencies'));
 fs.copyFileSync(
   path.join(__dirname, './model/package.json'),
   path.join(tmpDir, 'package.json')
 );
-cp.execSync('npm i --silent', { cwd: tmpDir });
+switch (deployment.provider) {
+  case 'aws':
+    cp.execSync('npm i --silent serverless-apigw-binary', {
+      cwd: tmpDir
+    });
+    if (deployment.domainName) {
+      cp.execSync('npm i --silent serverless-domain-manager', {
+        cwd: tmpDir
+      });
+    }
+    break;
+  case 'google':
+    cp.execSync('npm i --silent serverless-google-cloudfunctions', {
+      cwd: tmpDir
+    });
+    break;
+}
 
 // transpile ServrRX-ts harness and emit index.js
 console.log(chalk.blue('...transpiling ServeRX-ts driver'));
 const serverx = transpileServeRX(deployment);
-fs.writeFileSync(path.join(tmpDir, 'index.js'), serverx.outputText);
+fs.writeFileSync(path.join(deployDir, 'index.js'), serverx.outputText);
 
 // finally! -- serverless deploy
 if (!argv['dryrun'])
-  cp.execSync('serverless deploy', { cwd: tmpDir, stdio: 'inherit' });
+  cp.execSync('serverless deploy', { cwd: deployDir, stdio: 'inherit' });

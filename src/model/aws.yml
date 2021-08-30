@@ -7,19 +7,8 @@ provider:
   region: xxx
   stage: xxx
 
-package:
-  patterns:
-    - '!node_modules/axios/**'
-    - '!node_modules/googleapis/**'
-    - '!node_modules/rimraf/**'
-    - '!node_modules/serverless-apigw-binary/**'
-    - '!node_modules/serverless-domain-manager/**'
-    - '!node_modules/serverless-google-cloudfunctions/**'
-    - '!node_modules/typescript/**'
-
 plugins:
   - serverless-apigw-binary
-  - serverless-domain-manager
 
 custom:
   apigwBinary:

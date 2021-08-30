@@ -240,6 +240,7 @@ describe('loadDeployment unit tests', () => {
       expect(serverless.service).toEqual(deployment.service);
       expect(serverless.provider.stage).toEqual(deployment.stage);
       expect(serverless.provider.region).toEqual(deployment.region);
+      expect(serverless.plugins).toEqual(['serverless-apigw-binary']);
     });
 
     test('properly configure serverless.yml from AWS deployment with custom domain', () => {
@@ -262,6 +263,10 @@ describe('loadDeployment unit tests', () => {
       expect(serverless.service).toEqual(deployment.service);
       expect(serverless.provider.stage).toEqual(deployment.stage);
       expect(serverless.provider.region).toEqual(deployment.region);
+      expect(serverless.plugins).toEqual([
+        'serverless-apigw-binary',
+        'serverless-domain-manager'
+      ]);
     });
 
     test('properly configure serverless.yml from Google deployment', () => {
@@ -279,6 +284,7 @@ describe('loadDeployment unit tests', () => {
       expect(serverless.provider.credentials).toEqual(deployment.credentials);
       expect(serverless.provider.project).toEqual(deployment.project);
       expect(serverless.provider.region).toEqual(deployment.region);
+      expect(serverless.plugins).toEqual(['serverless-google-cloudfunctions']);
     });
   });
 

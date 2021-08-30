@@ -156,6 +156,7 @@ export function loadServerless(deployment: Deployment): any {
         else delete serverless.custom.customDomain.certificateName;
         serverless.custom.customDomain.domainName = deployment.domainName;
         serverless.custom.customDomain.stage = deployment.stage;
+        serverless.plugins.push('serverless-domain-manager');
       }
       break;
     case 'google':

@@ -19,8 +19,8 @@
     "help": "npm run build && node dist/index.js",
     "lint": "eslint ./src/*.ts",
     "prettier": "prettier --write .",
-    "sample-aws": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json",
-    "sample-google": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/google.json",
+    "sample:aws": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/aws.json",
+    "sample:google": "npm run build && node dist/index.js --app sample/app --deploy sample/deploy/google.json",
     "test": "jest --runInBand --coverage && make-coverage-badge && mv ./coverage/badge.svg ./coverage.svg",
     "test:only": "jest --coverage=false -- %1",
     "toc": "markdown-toc -i README.md"
@@ -29,10 +29,6 @@
     "chalk": "^4",
     "js-yaml": "^4",
     "rimraf": "^3",
-    "serverless-apigw-binary": "^0.4.4",
-    "serverless-domain-manager": "^5",
-    "serverless-google-cloudfunctions": "*",
-    "serverx-ts": "latest",
     "typescript": "4.3",
     "yargs": "^17"
   },
