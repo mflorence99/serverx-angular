@@ -59,7 +59,7 @@ export function loadApp(
     if (!files.some((f) => f.endsWith(path.join(appDir, 'index.html'))))
       errors.push(config.messages.MISSING_INDEX_HTML);
     // add an info for each file
-    infos.push(...files);
+    // 👉 not now infos.push(...files);
   } catch (error) {
     errors.push(error.message);
   }
