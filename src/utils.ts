@@ -49,8 +49,8 @@ export function baseHref(deployment: Deployment): string {
 export function loadApp(
   appDir: string,
   errors: string[],
-  warnings: string[],
-  infos: string[]
+  _warnings: string[],
+  _infos: string[]
 ): string[] {
   const files: string[] = [];
   try {
