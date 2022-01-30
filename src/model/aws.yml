@@ -2,8 +2,7 @@ service: xxx
 
 provider:
   name: aws
-  runtime: nodejs12.x
-  lambdaHashingVersion: 20201221
+  runtime: nodejs14.x
   region: xxx
   stage: xxx
 
