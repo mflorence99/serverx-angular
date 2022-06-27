@@ -2,7 +2,7 @@ service: xxx
 
 provider:
   name: aws
-  runtime: nodejs18.x
+  runtime: nodejs16.x
   region: xxx
   stage: xxx
 
